@@ -56,8 +56,11 @@ function App() {
   };
 
   const Delete_Event_Fun = (eventId) => {
-    const updated_Events = events.filter((event) => event.id !== eventId);
-    setEvents(updated_Events);
+    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+    if (confirmDelete) {
+      const updated_Events = events.filter((event) => event.id !== eventId);
+      setEvents(updated_Events);
+    }
   };
 
   return (
