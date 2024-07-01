@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
 import CalendarComponent from './components/CalendarComponent';
 import EventForm from './components/EventForm';
 import EventList from './components/EventList';
@@ -6,7 +6,19 @@ import EventList from './components/EventList';
 function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventName, setEventName] = useState("");
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(() => {
+    const storedEvents = localStorage.getItem("events");
+    return storedEvents
+      ? JSON.parse(storedEvents).map(event => ({
+          ...event,
+          date: new Date(event.date)
+        }))
+      : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("events", JSON.stringify(events));
+  }, [events]);
 
   const Date_Click_Fun = (date) => {
     setSelectedDate(date);
@@ -80,4 +92,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
